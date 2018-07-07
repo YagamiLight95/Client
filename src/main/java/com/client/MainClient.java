@@ -3,21 +3,22 @@ package com.client;
 import java.time.Duration;
 
 import redis.clients.jedis.Jedis;
-//import redis.clients.jedis.JedisPool;
-//import redis.clients.jedis.JedisPoolConfig;
+import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.JedisPubSub;
 
 public class MainClient {
 
-//	static JedisPool jp;
+	static JedisPool jp;
 	
 	public static void main(String[] args) {
 		
 		System.out.println("Script partito...");
 		try {
-		//	jp = new JedisPool(buildPoolConfig(),"172.30.118.49", 6379);
-			Jedis jClient = new Jedis("172.30.118.49", 6379); 
-					//jp.getResource();
+			jp = new JedisPool(buildPoolConfig(),"172.30.118.49", 6379);
+			Jedis jClient =jp.getResource();
+					// new Jedis("172.30.118.49", 6379); 
+					
 			jClient.auth(System.getenv("REDIS_PWD"));
 			jClient.connect();
 			jClient.subscribe(new JedisPubSub() {
@@ -35,7 +36,7 @@ public class MainClient {
 			e.printStackTrace();
 		}
 	}
-/*
+
 	private static JedisPoolConfig buildPoolConfig() {
 	    final JedisPoolConfig poolConfig = new JedisPoolConfig();
 	    poolConfig.setMaxTotal(128);
@@ -50,6 +51,6 @@ public class MainClient {
 	    poolConfig.setBlockWhenExhausted(true);
 	    return poolConfig;
 	}
-	*/
+	
 	
 }
