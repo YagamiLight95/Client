@@ -88,10 +88,10 @@
                                     <mainClass>com.client.MainClient</mainClass>
                                 </manifest>
                             </archive>
-                            <appendAssemblyId>false</appendAssemblyId>
                             <descriptorRefs>
                                 <descriptorRef>jar-with-dependencies</descriptorRef>
                             </descriptorRefs>
+                            <appendAssemblyId>false</appendAssemblyId>
                         </configuration>
                     </execution>
                 </executions>
