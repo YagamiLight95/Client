@@ -22,7 +22,12 @@ public class MainClient {
 			jClient.subscribe(new JedisPubSub() {
 			    @Override
 			    public void onMessage(String channel, String message) {
-			        System.out.println(jClient.rpop("Users"));
+			    	String user ="";
+			    	do{
+			    		user = jClient.rpop("Users");
+			    		System.out.println(user);
+			    		user = jClient.rpop("Users");
+			    	}while(user!=null);
 			    }
 			}, "Nuovi_Utenti");
 		}catch(Exception e) {
