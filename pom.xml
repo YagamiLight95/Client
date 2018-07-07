@@ -88,6 +88,9 @@
                                     <mainClass>com.client.MainClient</mainClass>
                                 </manifest>
                             </archive>
+                            <descriptorRefs>
+                                <descriptorRef></descriptorRef>
+                            </descriptorRefs>
                         </configuration>
                     </execution>
                 </executions>
