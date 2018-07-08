@@ -18,9 +18,10 @@ public class MainClient {
 		//	jp = new JedisPool(buildPoolConfig(),"172.30.118.49", 6379);
 			Jedis jClient = new Jedis("172.30.118.49", 6379); 
 					//jp.getResource();
-					
+			System.out.println(System.getenv("REDIS_PWD"));
 			jClient.auth(System.getenv("REDIS_PWD"));
 			jClient.connect();
+			System.out.println("Mi metto in ascolto sul canale Nuovi_Utenti");
 			jClient.subscribe(new JedisPubSub() {
 			    @Override
 			    public void onMessage(String channel, String message) {
