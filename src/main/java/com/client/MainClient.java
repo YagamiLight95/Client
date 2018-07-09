@@ -26,6 +26,7 @@ public class MainClient {
 			    @Override
 			    public void onMessage(String channel, String message) {
 			    	String user ="";
+			    	System.out.println("Messaggio ricevuto : " + message + " sul canale : "+ channel);
 			    	do{
 			    		user = jClient.rpop("Users");
 			    		System.out.println(user);
