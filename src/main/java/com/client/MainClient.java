@@ -1,6 +1,7 @@
 package com.client;
 
 import java.time.Duration;
+import java.util.ArrayList;
 
 import redis.clients.jedis.Jedis;
 //import redis.clients.jedis.JedisPool;
@@ -30,12 +31,14 @@ public class MainClient {
 					//jp.getResource();
 					jClient1.auth(System.getenv("REDIS_PWD"));
 					jClient1.connect();
-			    	System.out.println("Messaggio ricevuto : " + message + " sul canale : "+ channel);
+			    	//System.out.println("Messaggio ricevuto : " + message + " sul canale : "+ channel);
 		    		user = jClient1.rpop("Users");
+		    		ArrayList<String> users = new ArrayList<String>();
 		    		while(user!=null){
-			    		System.out.println(user);
+			    		users.add(user);
 			    		user = jClient1.rpop("Users");
 			    	}
+		    		System.out.println(users.toString());
 			    }
 			}, "Nuovi_Utenti");
 		}catch(Exception e) {
