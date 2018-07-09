@@ -26,11 +26,16 @@ public class MainClient {
 			    @Override
 			    public void onMessage(String channel, String message) {
 			    	String user ="";
+			    	Jedis jClient1 = new Jedis("172.30.118.49", 6379); 
+					//jp.getResource();
+					System.out.println(System.getenv("REDIS_PWD"));
+					jClient1.auth(System.getenv("REDIS_PWD"));
+					jClient1.connect();
 			    	System.out.println("Messaggio ricevuto : " + message + " sul canale : "+ channel);
 			    	do{
-			    		user = jClient.rpop("Users");
+			    		user = jClient1.rpop("Users");
 			    		System.out.println(user);
-			    		user = jClient.rpop("Users");
+			    		user = jClient1.rpop("Users");
 			    	}while(user!=null);
 			    }
 			}, "Nuovi_Utenti");
