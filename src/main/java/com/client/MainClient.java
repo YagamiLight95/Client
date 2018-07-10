@@ -37,6 +37,7 @@ public class MainClient {
 			    		users.add(user);
 			    		user = jClient1.rpop("Users");
 			    	}
+		    		jClient1.disconnect();
 		    		System.out.println(users.toString());
 			    }
 			}, "Nuovi_Utenti");
