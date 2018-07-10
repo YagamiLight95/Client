@@ -3,6 +3,8 @@ package com.client;
 import java.time.Duration;
 import java.util.ArrayList;
 
+import org.springframework.web.client.RestTemplate;
+
 import redis.clients.jedis.Jedis;
 //import redis.clients.jedis.JedisPool;
 //import redis.clients.jedis.JedisPoolConfig;
@@ -36,11 +38,16 @@ public class MainClient {
 		    		while(user!=null){
 			    		users.add(user);
 			    		user = jClient1.rpop("Users");
+			    		
 			    	}
 		    		jClient1.disconnect();
 		    		if(users.size()>0) {
 		    			System.out.println(users.toString());
 		    		}
+		    		System.out.println("Provo a fare una chiamata GET");
+		    		RestTemplate rt = new RestTemplate();
+		    		String response = rt.getForObject("http://server-myproject.192.168.99.100.nip.io/prova/", String.class);
+		    		System.out.println("Ecco la risposta: " + response);
 			    }
 			}, "Nuovi_Utenti");
 		}catch(Exception e) {
