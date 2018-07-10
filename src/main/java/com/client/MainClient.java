@@ -38,7 +38,9 @@ public class MainClient {
 			    		user = jClient1.rpop("Users");
 			    	}
 		    		jClient1.disconnect();
-		    		System.out.println(users.toString());
+		    		if(users.size()>0) {
+		    			System.out.println(users.toString());
+		    		}
 			    }
 			}, "Nuovi_Utenti");
 		}catch(Exception e) {
