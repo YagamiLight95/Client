@@ -2,8 +2,15 @@ package com.client;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
+
+import com.google.gson.Gson;
+import com.server1.User;
 
 import redis.clients.jedis.Jedis;
 //import redis.clients.jedis.JedisPool;
@@ -28,26 +35,30 @@ public class MainClient {
 			jClient.subscribe(new JedisPubSub() {
 			    @Override
 			    public void onMessage(String channel, String message) {
-			    	String user ="";
+			    	User user = null;
 			    	Jedis jClient1 = new Jedis("172.30.118.49", 6379);
 					jClient1.auth(System.getenv("REDIS_PWD"));
 					jClient1.connect();
-			    	//System.out.println("Messaggio ricevuto : " + message + " sul canale : "+ channel);
-		    		user = jClient1.rpop("Users");
-		    		ArrayList<String> users = new ArrayList<String>();
+					Gson g = new Gson();
+		    		user = g.fromJson(jClient1.rpop("Users"),User.class);
+		    		ArrayList<User> users = new ArrayList<User>();
 		    		while(user!=null){
+		    			//StringTokenizer st = new StringTokenizer(useIt,",");
+			    		//user = new User(st.nextToken(),st.nextToken(),st.nextToken(),st.nextToken());
 			    		users.add(user);
-			    		user = jClient1.rpop("Users");
+			    		RestTemplate rt = new RestTemplate();
+			    		String gson = g.toJson(user);
+			    		ResponseEntity<Boolean> re = rt.postForEntity("http://server-myproject.192.168.99.100.nip.io/insertrequest/", gson, Boolean.class);
+			    		System.out.println(re.getBody());
+			    		
+			    		user = g.fromJson(jClient1.rpop("Users"), User.class);
 			    		
 			    	}
 		    		jClient1.disconnect();
 		    		if(users.size()>0) {
-		    			System.out.println(users.toString());
+		    			System.out.println(users.toString() + " " + users.size());
+		    			System.out.println();
 		    		}
-		    		System.out.println("Provo a fare una chiamata GET");
-		    		RestTemplate rt = new RestTemplate();
-		    		String response = rt.getForObject("http://server-myproject.192.168.99.100.nip.io/prova/", String.class);
-		    		System.out.println("Ecco la risposta: " + response);
 			    }
 			}, "Nuovi_Utenti");
 		}catch(Exception e) {
